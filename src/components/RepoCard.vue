@@ -29,7 +29,9 @@ defineProps<{
             <template #description>
                 {{ owner }}
             </template>
-            {{ description }}
+            <template #default>
+                {{ description }}
+            </template>
             <template #footer>
                 构建时版本：
                 <template v-if="revision">

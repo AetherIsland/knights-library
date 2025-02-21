@@ -82,7 +82,9 @@ watchEffect(() => {
                     <template #icon>
                         <NIcon><LogoGithub /></NIcon>
                     </template>
-                    在 GitHub 上查看
+                    <template #default>
+                        在 GitHub 上查看
+                    </template>
                 </NButton>
                 <NFlex>
                     <NAlert v-if="info?.seenInHead === false" title="不在最新版本中" type="warning">
