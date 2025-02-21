@@ -1,0 +1,4 @@
+[submodule "library-collection"]
+	path = src/generated/library-collection
+	url = https://github.com/AetherIsland/library-collection.git
+	shallow = true
