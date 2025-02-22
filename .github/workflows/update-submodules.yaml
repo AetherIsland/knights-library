@@ -1,0 +1,24 @@
+name: Update Submodules
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-submodules
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git config --global user.name 'github-actions[bot]'
+      - uses: actions/checkout@v4
+      - run: git submodule update --init --remote
+      - run: |
+          git commit -a -m 'feat: update submodules' && git push
+        continue-on-error: true
