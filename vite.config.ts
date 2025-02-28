@@ -1,9 +1,9 @@
+import process from 'node:process';
 import vue from '@vitejs/plugin-vue';
+import gitRepoInfo from 'git-repo-info';
 import { defineConfig } from 'vite';
 import vueDevTools from 'vite-plugin-vue-devtools';
 import tsconfigPaths from 'vite-tsconfig-paths';
-import process from 'node:process';
-import gitRepoInfo from 'git-repo-info';
 
 const gitInfo = gitRepoInfo();
 
