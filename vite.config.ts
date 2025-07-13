@@ -25,4 +25,7 @@ export default defineConfig({
         stringify: true,
     },
     appType: 'mpa',
+    experimental: {
+        enableNativePlugin: true,
+    },
 });
