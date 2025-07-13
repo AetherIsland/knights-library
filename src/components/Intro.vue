@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { CollectionName } from '@/library-collection';
-import { collectionNames, getMetadata, githubRepo } from '@/library-collection';
 import { NFlex, NH3, NP } from 'naive-ui';
 import { ref } from 'vue';
+import { collectionNames, getMetadata, githubRepo } from '@/library-collection';
 import RepoCard from './RepoCard.vue';
 
 const revisions = ref<Record<CollectionName, string | null>>({

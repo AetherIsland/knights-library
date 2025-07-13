@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { CollectionName, ModUnitId } from '@/library-collection';
 import type { SelectGroupOption, SelectOption } from 'naive-ui';
-import { collectionNames, getMetadata } from '@/library-collection';
+import type { CollectionName, ModUnitId } from '@/library-collection';
 import { computedAsync, isDefined } from '@vueuse/core';
 import { NSelect } from 'naive-ui';
+import { collectionNames, getMetadata } from '@/library-collection';
 
 const emit = defineEmits<{
     change: [collection: CollectionName | null, id: ModUnitId | null];

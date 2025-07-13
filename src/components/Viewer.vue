@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type { CollectionName, ModUnitId } from '@/library-collection';
 import type { DataTableColumn, DataTableRowData } from 'naive-ui';
-import { getCommitMap, getModUnitInfo, githubRepo } from '@/library-collection';
-import { modUnitToDataTable } from '@/transformer';
+import type { CollectionName, ModUnitId } from '@/library-collection';
 import { LogoGithub } from '@vicons/ionicons5';
 import { computedAsync } from '@vueuse/core';
 import { NAlert, NButton, NDataTable, NDivider, NFlex, NIcon, NSpin, NText, useThemeVars } from 'naive-ui';
 import { computed, ref, watchEffect } from 'vue';
+import { getCommitMap, getModUnitInfo, githubRepo } from '@/library-collection';
+import { modUnitToDataTable } from '@/transformer';
 
 const props = defineProps<{
     collection: CollectionName;

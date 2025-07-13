@@ -1,7 +1,7 @@
-import type { CommitMap, ModUnitInfo } from '@/library-collection';
 import type { DataTableColumn, DataTableRowData } from 'naive-ui';
-import ViewerTooltip from '@/components/ViewerTooltip.vue';
+import type { CommitMap, ModUnitInfo } from '@/library-collection';
 import { h } from 'vue';
+import ViewerTooltip from '@/components/ViewerTooltip.vue';
 
 type ComponentKey = typeof componentKeys[number];
 

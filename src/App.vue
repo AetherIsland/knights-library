@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import { darkTheme, dateZhCN, NConfigProvider, NGlobalStyle, useOsTheme, zhCN } from 'naive-ui';
+import { computed } from 'vue';
 import AppContent from '@/components/AppContent.vue';
 import AppFooter from '@/components/AppFooter.vue';
 import AppHeader from '@/components/AppHeader.vue';
-import { darkTheme, dateZhCN, NConfigProvider, NGlobalStyle, useOsTheme, zhCN } from 'naive-ui';
-import { computed } from 'vue';
 
 const osTheme = useOsTheme();
 
