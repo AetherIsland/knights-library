@@ -3,7 +3,6 @@ import vue from '@vitejs/plugin-vue';
 import gitRepoInfo from 'git-repo-info';
 import { defineConfig } from 'vite';
 import vueDevTools from 'vite-plugin-vue-devtools';
-import tsconfigPaths from 'vite-tsconfig-paths';
 
 const gitInfo = gitRepoInfo();
 
@@ -16,16 +15,15 @@ export default defineConfig({
     base: '',
     publicDir: false,
     plugins: [
-        tsconfigPaths(),
         vue(),
         vueDevTools(),
     ],
+    resolve: {
+        tsconfigPaths: true,
+    },
     json: {
         namedExports: false,
         stringify: true,
     },
     appType: 'mpa',
-    experimental: {
-        enableNativePlugin: true,
-    },
 });
