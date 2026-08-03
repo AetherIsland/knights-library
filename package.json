@@ -16,23 +16,23 @@
         "lint": "eslint"
     },
     "dependencies": {
-        "@vueuse/core": "^14.3.0",
-        "vue": "^3.5.35"
+        "@vueuse/core": "^14.4.0",
+        "vue": "^3.5.40"
     },
     "devDependencies": {
-        "@antfu/eslint-config": "^9.0.0",
+        "@antfu/eslint-config": "^9.2.0",
         "@tsconfig/node-lts": "^24.0.0",
-        "@types/node": "^25.9.2",
+        "@types/node": "^26.1.2",
         "@vicons/ionicons5": "^0.13.0",
-        "@vitejs/plugin-vue": "^6.0.7",
+        "@vitejs/plugin-vue": "^6.0.8",
         "@vue/tsconfig": "^0.9.1",
-        "eslint": "^10.4.1",
+        "eslint": "^10.8.0",
         "git-repo-info": "^2.1.1",
         "naive-ui": "^2.44.1",
-        "npm-run-all2": "^9.0.1",
+        "npm-run-all2": "^9.0.3",
         "typescript": "~6.0.3",
-        "vite": "8.0.16",
-        "vite-plugin-vue-devtools": "^8.1.2",
-        "vue-tsc": "^3.3.4"
+        "vite": "8.2.0",
+        "vite-plugin-vue-devtools": "^8.2.1",
+        "vue-tsc": "^3.3.9"
     }
 }
