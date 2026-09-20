@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import type { DataTableColumn, DataTableRowData } from 'naive-ui';
 import type { CollectionName, ModUnitId } from '@/library-collection';
+import type { DiffStatus } from '@/transformer';
 import { LogoGithub } from '@vicons/ionicons5';
 import { computedAsync } from '@vueuse/core';
 import { NAlert, NButton, NDataTable, NDivider, NFlex, NIcon, NSpin, NText, useThemeVars } from 'naive-ui';
-import { computed, ref, watchEffect } from 'vue';
+import { computed, ref, useCssModule, watchEffect } from 'vue';
 import { getCommitMap, getModUnitInfo, githubRepo } from '@/library-collection';
-import { modUnitToDataTable } from '@/transformer';
+import { diffKey, modUnitToDataTable } from '@/transformer';
 
 const props = defineProps<{
     collection: CollectionName;
@@ -14,6 +15,26 @@ const props = defineProps<{
 }>();
 
 const themeVars = useThemeVars();
+const cssModule = useCssModule();
+const diffClasses: Record<DiffStatus, string> = {
+    added: cssModule.diffAdded,
+    changed: cssModule.diffChanged,
+    removed: cssModule.diffRemoved,
+};
+
+function annotateColumns(columns: DataTableColumn[]) {
+    for (const column of columns) {
+        if (!('key' in column)) {
+            continue;
+        }
+        const hash = String(column.key);
+        column.cellProps = (row) => {
+            const diff = row[diffKey] as Record<string, DiffStatus> | undefined;
+            const status = diff?.[hash];
+            return status ? { class: diffClasses[status] } : {};
+        };
+    }
+}
 
 const githubRepoURL = computed(() => {
     const { repo, owner } = githubRepo[props.collection];
@@ -48,6 +69,7 @@ watchEffect(() => {
                 columns: columns.value,
                 components: components.value,
             } = modUnitToDataTable(info.value, commitMap.value, githubRepoURL.value));
+            annotateColumns(columns.value);
             githubTreeURL.value = `${githubRepoURL.value}/tree/HEAD/${info.value.path}`;
             hasNull.value = info.value.revisions.some(revision => revision.content === null);
             if (typeof columns.value[0].width === 'number') {
@@ -117,3 +139,20 @@ watchEffect(() => {
         </template>
     </NFlex>
 </template>
+
+<style module>
+.diffChanged {
+    background-color: color-mix(in srgb, v-bind('themeVars.warningColor') 18%, transparent) !important;
+    box-shadow: inset 3px 0 v-bind('themeVars.warningColor');
+}
+
+.diffAdded {
+    background-color: color-mix(in srgb, v-bind('themeVars.successColor') 18%, transparent) !important;
+    box-shadow: inset 3px 0 v-bind('themeVars.successColor');
+}
+
+.diffRemoved {
+    background-color: color-mix(in srgb, v-bind('themeVars.errorColor') 18%, transparent) !important;
+    box-shadow: inset 3px 0 v-bind('themeVars.errorColor');
+}
+</style>

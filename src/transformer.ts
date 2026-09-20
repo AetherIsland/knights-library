@@ -8,6 +8,55 @@ type ComponentKey = typeof componentKeys[number];
 const componentKeys = ['ib', 'position_vb', 'blend_vb', 'draw_vb', 'texcoord_vb', 'root_vs', 'first_vs'] as const;
 const firstColumnKey = 'argument';
 
+export type DiffStatus = 'added' | 'changed' | 'removed';
+
+/** 挂在行数据上的隐藏字段，记录各版本的差异状态，供渲染层读取。 */
+export const diffKey = '__diff';
+
+function annotateRows(rows: DataTableRowData[], revisions: ModUnitInfo['revisions']) {
+    for (const row of rows) {
+        const diff: Record<string, DiffStatus> = {};
+        let previous: unknown;
+        let state: 'init' | 'value' | 'missing' = 'init';
+        // revisions 为时间倒序（索引越小越新），逆序遍历得到时间正序
+        for (let i = revisions.length - 1; i >= 0; --i) {
+            const { hash, content } = revisions[i];
+            if (content === null) {
+                // 整个版本的数据缺失，跳过且不打断比较链
+                continue;
+            }
+            const value = row[hash];
+            if (value === undefined) {
+                // 只在从有值转为缺失的那一版标记，避免后续空版本被连续高亮
+                if (state === 'value') {
+                    diff[hash] = 'removed';
+                }
+                state = 'missing';
+            }
+            else {
+                if (state === 'value') {
+                    if (value !== previous) {
+                        diff[hash] = 'changed';
+                    }
+                }
+                else if (state === 'missing') {
+                    // 缺失后重新出现视为新增
+                    diff[hash] = 'added';
+                }
+                // state 为 init 时说明是最旧的有效版本，不标记
+                previous = value;
+                state = 'value';
+            }
+        }
+        if (Object.keys(diff).length > 0) {
+            row[diffKey] = diff;
+        }
+        if (row.children) {
+            annotateRows(row.children as DataTableRowData[], revisions);
+        }
+    }
+}
+
 function getKeyDescription(key: ComponentKey, path: ModUnitInfo['path']) {
     const basename = path.split('/').pop()!;
     switch (key) {
@@ -86,6 +135,7 @@ export function modUnitToDataTable(info: ModUnitInfo, map: CommitMap, githubRepo
     }
     for (const [name, value] of Object.entries(components)) {
         components[name] = value.filter(value => value);
+        annotateRows(components[name], info.revisions);
     }
 
     return { columns, components } as const;
